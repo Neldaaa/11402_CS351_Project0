@@ -16,7 +16,6 @@ Given an array of integers `nums` and an integer `target`, return the indices of
 - Array of two indices `[i, j]`
 
 **Implementation:**
-
 1. Use two nested loops to check all pairs
 2. For each pair, check if their sum equals the target
 3. Return the indices when a match is found
@@ -47,7 +46,6 @@ def twoSumArray(nums, target):
 - Array of two indices `[i, j]`
 
 **Implementation:**
-
 1. Create an empty hash map to store seen numbers
 2. Iterate through the array once
 3. For each number, calculate the complement (target - current number)
