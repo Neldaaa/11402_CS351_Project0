@@ -1,20 +1,37 @@
-#include <unordered_map>
 #include <vector>
+#include <unordered_set>
+#include <unordered_map>
 
-std::vector<int> twoSum(std::vector<int>& nums, int target) {
-    std::unordered_map<int, int> numMap; // value -> index
+// Two-pointer approach implementation
+std::vector<int> twoSumArray(const std::vector<int>& nums, int target) {
+    std::vector<int> result;
+    int left = 0, right = nums.size() - 1;
+    
+    while (left < right) {
+        int sum = nums[left] + nums[right];
+        if (sum == target) {
+            result.push_back(left);
+            result.push_back(right);
+            break;
+        } else if (sum < target) {
+            left++;
+        } else {
+            right--;
+        }
+    }
+    return result;
+}
+
+// Hash table approach implementation
+std::vector<int> twoSumHashTable(const std::vector<int>& nums, int target) {
+    std::unordered_map<int, int> seen;
     
     for (int i = 0; i < nums.size(); i++) {
         int complement = target - nums[i];
-        
-        // Check if complement exists in map
-        if (numMap.find(complement) != numMap.end()) {
-            return {numMap[complement], i};
+        if (seen.find(complement) != seen.end()) {
+            return {seen[complement], i};
         }
-        
-        // Store current number and its index
-        numMap[nums[i]] = i;
+        seen[nums[i]] = i;
     }
-    
-    return {-1, -1}; // No solution found
+    return {};
 }
