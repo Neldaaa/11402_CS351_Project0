@@ -56,3 +56,31 @@ The GitHub Actions workflow automatically triggers on:
 - Automatic PR status checks
 - Failure notifications
 - Test report summaries
+
+## Build and Test Instructions
+
+### Local build with CMake
+1. Create a build directory:
+   ```bash
+   mkdir build
+   cd build
+   ```
+2. Configure the project:
+   ```bash
+   cmake -DCMAKE_BUILD_TYPE=Release ..
+   ```
+3. Build the application and tests:
+   ```bash
+   cmake --build . --parallel
+   ```
+4. Run the unit tests:
+   ```bash
+   ctest --output-on-failure
+   ```
+
+### Docker
+Build and run the project inside Docker:
+```bash
+docker build -t twosum-ci .
+docker run --rm twosum-ci
+```
