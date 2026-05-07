@@ -35,6 +35,11 @@ std::vector<int> twoSumArray(const std::vector<int>& nums, int target) {
 
 // Hash table approach implementation
 std::vector<int> twoSumHashTable(const std::vector<int>& nums, int target) {
+    // Handle empty input
+    if (nums.empty()) {
+        return {-1, -1};
+    }
+    
     std::unordered_map<int, int> seen;
     
     for (int i = 0; i < nums.size(); i++) {
@@ -44,5 +49,7 @@ std::vector<int> twoSumHashTable(const std::vector<int>& nums, int target) {
         }
         seen[nums[i]] = i;
     }
-    return {};
+    
+    // Return [-1, -1] if no pair found
+    return {-1, -1};
 }
