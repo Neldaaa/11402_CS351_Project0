@@ -62,8 +62,8 @@ int main() {
     runTest("Standard case (hashtable)", standard, 9, {0, 1}, twoSumHashTable);
     runTest("Negative numbers (array)", negative, 2, {2, 3}, twoSumArray);
     runTest("Negative numbers (hashtable)", negative, 2, {2, 3}, twoSumHashTable);
-    runTest("Large numbers (array)", large, 3000003, {0, 1}, twoSumArray);
-    runTest("Large numbers (hashtable)", large, 3000003, {0, 1}, twoSumHashTable);
+    runTest("Large numbers (array)", large, 3000000, {0, 1}, twoSumArray);
+    runTest("Large numbers (hashtable)", large, 3000000, {0, 1}, twoSumHashTable);
     runTest("Duplicate values (array)", duplicates, 6, {0, 1}, twoSumArray);
     runTest("Duplicate values (hashtable)", duplicates, 6, {0, 1}, twoSumHashTable);
     runTest("Mixed duplicate solution (array)", mixedDuplicates, 6, {1, 2}, twoSumArray);
