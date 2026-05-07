@@ -4,6 +4,11 @@
 
 // Two-pointer approach implementation
 std::vector<int> twoSumArray(const std::vector<int>& nums, int target) {
+    // Handle empty input
+    if (nums.empty()) {
+        return {-1, -1};
+    }
+    
     std::vector<int> result;
     int left = 0, right = nums.size() - 1;
     
@@ -19,6 +24,12 @@ std::vector<int> twoSumArray(const std::vector<int>& nums, int target) {
             right--;
         }
     }
+    
+    // Return [-1, -1] if no pair found
+    if (result.empty()) {
+        return {-1, -1};
+    }
+    
     return result;
 }
 
