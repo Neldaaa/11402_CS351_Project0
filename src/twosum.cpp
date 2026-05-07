@@ -4,34 +4,21 @@
 #include <unordered_map>
 
 // Two-pointer approach implementation
+// Brute force approach - works on unsorted arrays
 std::vector<int> twoSumArray(const std::vector<int>& nums, int target) {
-    // Handle empty input
     if (nums.empty()) {
         return {-1, -1};
     }
-    
-    std::vector<int> result;
-    int left = 0, right = nums.size() - 1;
-    
-    while (left < right) {
-        int sum = nums[left] + nums[right];
-        if (sum == target) {
-            result.push_back(left);
-            result.push_back(right);
-            break;
-        } else if (sum < target) {
-            left++;
-        } else {
-            right--;
+
+    for (int i = 0; i < (int)nums.size() - 1; i++) {
+        for (int j = i + 1; j < (int)nums.size(); j++) {
+            if (nums[i] + nums[j] == target) {
+                return {i, j};
+            }
         }
     }
-    
-    // Return [-1, -1] if no pair found
-    if (result.empty()) {
-        return {-1, -1};
-    }
-    
-    return result;
+
+    return {-1, -1};
 }
 
 // Hash table approach implementation
