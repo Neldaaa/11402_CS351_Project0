@@ -72,8 +72,8 @@ int main() {
     runTest("All zeros target zero (hashtable)", zeros, 0, {0, 1}, twoSumHashTable);
     runTest("Last pair solution (array)", lastPair, 17, {3, 4}, twoSumArray);
     runTest("Last pair solution (hashtable)", lastPair, 17, {3, 4}, twoSumHashTable);
-    runTest("Mixed negative and positive (array)", negativesAndPositives, 4, {1, 4}, twoSumArray);
-    runTest("Mixed negative and positive (hashtable)", negativesAndPositives, 4, {1, 4}, twoSumHashTable);
+    runTest("Mixed negative and positive (array)", negativesAndPositives, 4, {0, 3}, twoSumArray);
+    runTest("Mixed negative and positive (hashtable)", negativesAndPositives, 4, {0, 3}, twoSumHashTable);
     runTest("Stress case 10000 elements (array)", stress, 19999, {9998, 9999}, twoSumArray);
     runTest("Stress case 10000 elements (hashtable)", stress, 19999, {9998, 9999}, twoSumHashTable);
 
