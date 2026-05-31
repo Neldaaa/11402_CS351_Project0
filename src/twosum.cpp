@@ -3,8 +3,7 @@
 #include <unordered_set>
 #include <unordered_map>
 
-// Two-pointer approach implementation
-// Brute force approach - works on unsorted arrays
+// Brute force approach - O(n^2) time complexity
 std::vector<int> twoSumArray(const std::vector<int>& nums, int target) {
     if (nums.empty()) {
         return {-1, -1};
