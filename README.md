@@ -84,3 +84,11 @@ Build and run the project inside Docker:
 docker build -t twosum-ci .
 docker run --rm twosum-ci
 ```
+
+## Complexity Analysis
+- **TwoSumArray (Brute Force):** 
+  - Time Complexity: O(n²) because of the nested loops checking every pair.
+  - Space Complexity: O(1) as it does not require any extra memory scaling with input size.
+- **TwoSumHashTable:** 
+  - Time Complexity: O(n) because it traverses the array exactly once, with hash map lookups taking O(1) on average.
+  - Space Complexity: O(n) to store up to n elements in the hash map.
