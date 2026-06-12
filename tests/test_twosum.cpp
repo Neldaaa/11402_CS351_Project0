@@ -1,82 +1,106 @@
+// ==========================================================
+//  Unit tests for Two Sum (Project 0)
+//  Output: one line per test case with input -> result details.
+//  All test cases run even if one fails; summary printed at end.
+// ==========================================================
 #include <iostream>
-#include <vector>
 #include <string>
+#include <vector>
 #include "twosum.h"
+
+static int g_passed = 0;
+static int g_failed = 0;
+static int g_testNo = 0;
 
 static bool equalPairs(const std::vector<int>& a, const std::vector<int>& b) {
     return a.size() == 2 && b.size() == 2 && a[0] == b[0] && a[1] == b[1];
 }
 
-static std::string formatVector(const std::vector<int>& vec) {
-    std::string result = "[";
-    for (size_t i = 0; i < vec.size(); ++i) {
-        result += std::to_string(vec[i]);
-        if (i + 1 < vec.size()) {
-            result += ", ";
-        }
+static std::string fmt(const std::vector<int>& vec, size_t maxItems = 6) {
+    std::string s = "[";
+    size_t n = vec.size();
+    for (size_t i = 0; i < n && i < maxItems; ++i) {
+        s += std::to_string(vec[i]);
+        if (i + 1 < n && i + 1 < maxItems) s += ",";
     }
-    result += "]";
-    return result;
+    if (n > maxItems) s += ",... " + std::to_string(n) + " items";
+    s += "]";
+    return s;
 }
 
+// Run one test case and print a single aligned result line, e.g.:
+// [T01] Standard case ............. PASS  nums=[2,7,11,15] target=9 -> [0,1]
 static void runTest(const std::string& name,
                     const std::vector<int>& nums,
                     int target,
                     const std::vector<int>& expected,
                     std::vector<int> (*solver)(const std::vector<int>&, int)) {
+    ++g_testNo;
     std::vector<int> result = solver(nums, target);
-    if (!equalPairs(result, expected)) {
-        std::cerr << "FAILED: " << name << "\n";
-        std::cerr << "  input nums=" << formatVector(nums) << ", target=" << target << "\n";
-        std::cerr << "  expected=" << formatVector(expected) << "\n";
-        std::cerr << "  actual=" << formatVector(result) << "\n";
-        std::exit(EXIT_FAILURE);
+    bool ok = equalPairs(result, expected);
+
+    char id[8];
+    std::snprintf(id, sizeof(id), "[T%02d] ", g_testNo);
+    std::string label = std::string(id) + name + " ";
+    std::cout << label;
+    for (size_t i = label.size(); i < 38; ++i) std::cout << '.';
+
+    if (ok) {
+        std::cout << " PASS  nums=" << fmt(nums) << " target=" << target
+                  << " -> " << fmt(result) << "\n";
+        ++g_passed;
+    } else {
+        std::cout << " FAIL  nums=" << fmt(nums) << " target=" << target
+                  << " expected=" << fmt(expected) << " got=" << fmt(result) << "\n";
+        ++g_failed;
     }
 }
 
+// Run the same test case against BOTH implementations.
+static void runBoth(const std::string& name,
+                    const std::vector<int>& nums,
+                    int target,
+                    const std::vector<int>& expected) {
+    runTest(name + " (array)", nums, target, expected, twoSumArray);
+    runTest(name + " (hashtable)", nums, target, expected, twoSumHashTable);
+}
+
 int main() {
-    const std::vector<int> empty = {};
-    const std::vector<int> single = {5};
-    const std::vector<int> pair = {1, 2};
-    const std::vector<int> standard = {2, 7, 11, 15};
-    const std::vector<int> negative = {-1, -2, -3, 5};
-    const std::vector<int> large = {1000000, 2000000, 3};
-    const std::vector<int> duplicates = {3, 3, 4};
-    const std::vector<int> mixedDuplicates = {1, 3, 3, 4};
-    const std::vector<int> zeros = {0, 0, 0, 0};
-    const std::vector<int> lastPair = {5, 1, 2, 8, 9};
-    const std::vector<int> negativesAndPositives = {-4, 2, 6, 8, -2};
+    std::cout << "============================================================\n";
+    std::cout << "  Two Sum - Unit Test Suite\n";
+    std::cout << "  Goal: return indices of two numbers that add up to target\n";
+    std::cout << "  Implementations: brute-force array  |  hash table O(n)\n";
+    std::cout << "============================================================\n";
+
     std::vector<int> stress;
     stress.reserve(10000);
-    for (int i = 1; i <= 10000; ++i) {
-        stress.push_back(i);
-    }
+    for (int i = 1; i <= 10000; ++i) stress.push_back(i);
 
-    runTest("Empty input returns no solution (array)", empty, 7, {-1, -1}, twoSumArray);
-    runTest("Empty input returns no solution (hashtable)", empty, 7, {-1, -1}, twoSumHashTable);
-    runTest("Single element returns no solution (array)", single, 5, {-1, -1}, twoSumArray);
-    runTest("Single element returns no solution (hashtable)", single, 5, {-1, -1}, twoSumHashTable);
-    runTest("Two elements exact pair (array)", pair, 3, {0, 1}, twoSumArray);
-    runTest("Two elements exact pair (hashtable)", pair, 3, {0, 1}, twoSumHashTable);
-    runTest("Standard case (array)", standard, 9, {0, 1}, twoSumArray);
-    runTest("Standard case (hashtable)", standard, 9, {0, 1}, twoSumHashTable);
-    runTest("Negative numbers (array)", negative, 2, {2, 3}, twoSumArray);
-    runTest("Negative numbers (hashtable)", negative, 2, {2, 3}, twoSumHashTable);
-    runTest("Large numbers (array)", large, 3000000, {0, 1}, twoSumArray);
-    runTest("Large numbers (hashtable)", large, 3000000, {0, 1}, twoSumHashTable);
-    runTest("Duplicate values (array)", duplicates, 6, {0, 1}, twoSumArray);
-    runTest("Duplicate values (hashtable)", duplicates, 6, {0, 1}, twoSumHashTable);
-    runTest("Mixed duplicate solution (array)", mixedDuplicates, 6, {1, 2}, twoSumArray);
-    runTest("Mixed duplicate solution (hashtable)", mixedDuplicates, 6, {1, 2}, twoSumHashTable);
-    runTest("All zeros target zero (array)", zeros, 0, {0, 1}, twoSumArray);
-    runTest("All zeros target zero (hashtable)", zeros, 0, {0, 1}, twoSumHashTable);
-    runTest("Last pair solution (array)", lastPair, 17, {3, 4}, twoSumArray);
-    runTest("Last pair solution (hashtable)", lastPair, 17, {3, 4}, twoSumHashTable);
-    runTest("Mixed negative and positive (array)", negativesAndPositives, 4, {0, 3}, twoSumArray);
-    runTest("Mixed negative and positive (hashtable)", negativesAndPositives, 4, {0, 3}, twoSumHashTable);
-    runTest("Stress case 10000 elements (array)", stress, 19999, {9998, 9999}, twoSumArray);
-    runTest("Stress case 10000 elements (hashtable)", stress, 19999, {9998, 9999}, twoSumHashTable);
+    std::cout << "\n-- Basic cases --\n";
+    runBoth("Standard case",        {2, 7, 11, 15},      9,       {0, 1});
+    runBoth("Two elements pair",    {1, 2},              3,       {0, 1});
+    runBoth("Last pair solution",   {5, 1, 2, 8, 9},     17,      {3, 4});
 
-    std::cout << "All TwoSum tests passed.\n";
-    return EXIT_SUCCESS;
+    std::cout << "\n-- Special values --\n";
+    runBoth("Negative numbers",     {-1, -2, -3, 5},     2,       {2, 3});
+    runBoth("Negative + positive",  {-4, 2, 6, 8, -2},   4,       {0, 3});
+    runBoth("Large numbers",        {1000000, 2000000, 3}, 3000000, {0, 1});
+    runBoth("Duplicate values",     {3, 3, 4},           6,       {0, 1});
+    runBoth("Mixed duplicates",     {1, 3, 3, 4},        6,       {1, 2});
+    runBoth("All zeros, target 0",  {0, 0, 0, 0},        0,       {0, 1});
+
+    std::cout << "\n-- Edge cases (no solution) --\n";
+    runBoth("Empty input",          {},                  7,       {-1, -1});
+    runBoth("Single element",       {5},                 5,       {-1, -1});
+    runBoth("No matching pair",     {1, 2, 5},           100,     {-1, -1});
+
+    std::cout << "\n-- Performance --\n";
+    runBoth("Stress: 10000 elements", stress,            19999,   {9998, 9999});
+
+    std::cout << "\n------------------------------------------------------------\n";
+    std::cout << "  Result: " << g_passed << "/" << (g_passed + g_failed)
+              << " test cases passed\n";
+    std::cout << "============================================================\n";
+
+    return g_failed == 0 ? EXIT_SUCCESS : EXIT_FAILURE;
 }
